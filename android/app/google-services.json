@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "459704971788",
+    "project_id": "makeburguer-bfb5f",
+    "storage_bucket": "makeburguer-bfb5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459704971788:android:fdb20a42034985f2fd7429",
+        "android_client_info": {
+          "package_name": "com.makeburguer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459704971788-50uk0r1ep7g3v3b5d7f25qscjes0f1pe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB_sDFxaF3em7I4QwOGtMg8-o9Wt3vntw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459704971788-50uk0r1ep7g3v3b5d7f25qscjes0f1pe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
