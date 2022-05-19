@@ -20,8 +20,9 @@ export default {
 
     SHAPE: '#DCDCDC',
     TITLE: '#FFF',
+    TEXT: '#0D0D0D',
 
-    GRADIENT: ['#121212', '#2B2B2B'],
+    GRADIENT: ['#121212', '#1D1D1D', '#2B2B2B'],
   },
 
   FONTS: {
