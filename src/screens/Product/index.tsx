@@ -70,7 +70,7 @@ export function Product() {
     const photo_url = await reference.getDownloadURL();
     console.log(photo_url);
 
-    //salvando a imagem no DB
+    //salvando o produto no DB
     firestore()
       .collection('products')
       .add({
@@ -124,7 +124,7 @@ export function Product() {
             </InputGroupHeader>
             <Input
               multiline
-              maxLength={80}
+              maxLength={120}
               style={{ height: 80 }}
               onChangeText={setDescription}
               value={description}

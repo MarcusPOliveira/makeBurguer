@@ -32,7 +32,7 @@ export function ProductCard({ data, ...rest }: Props) {
   return (
     <Container>
       <Content {...rest}>
-        <Image source={{ uri: data.photo_url }} />
+        <Image source={{ uri: data.photo_url }} resizeMode='contain' />
         <Details>
           <Identification>
             <Name>{data.name}</Name>

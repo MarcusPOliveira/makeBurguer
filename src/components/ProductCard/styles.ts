@@ -14,16 +14,19 @@ export const Image = styled.Image`
   width: 104px;
   height: 104px;
   border-radius: 52px;
-  margin-right: 20px;
+  margin-top: 12px;
+  margin-bottom: 5px;
 `;
 
 export const Details = styled.View`
   flex: 1;
+  margin-left: 20px;
 `;
 
 export const Identification = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-right: 20px;
 `;
 
 export const Name = styled.Text`
