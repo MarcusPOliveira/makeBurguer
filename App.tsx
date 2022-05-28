@@ -10,6 +10,7 @@ import theme from './src/theme';
 import { AuthProvider } from '@hooks/auth';
 import { SignIn } from '@screens/SignIn';
 import { Product } from '@screens/Product';
+import { Home } from '@screens/Home';
 
 export default function App() {
 
@@ -31,7 +32,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <StatusBar barStyle='light-content' translucent backgroundColor="transparent" />
       <AuthProvider>
-        <Product />
+        <Home />
       </AuthProvider>
     </ThemeProvider>
   );
