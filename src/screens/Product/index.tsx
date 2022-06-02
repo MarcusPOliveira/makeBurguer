@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Platform, ScrollView, ToastAndroid, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Platform, ScrollView, ToastAndroid, Alert, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { ProductProps } from '@components/ProductCard';
+import { ProductNavigationProps } from 'src/@types/navigation';
 import { BackButton } from '@components/BackButton';
 import { Photo } from '@components/Photo';
 import { InputPrice } from '@components/InputPrice';
@@ -24,14 +27,29 @@ import {
   MaxCharacters
 } from './styles';
 
+type ProductResponse = ProductProps & {
+  photo_path: string;
+  prices_sizes: {
+    size120: string;
+    size160: string;
+    size200: string;
+  };
+}
+
 export function Product() {
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(''); //link de exibição da imagem
+  const [photoPath, setPhotoPath] = useState(''); //referência de onde a imagem está salva no DB
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [priceSize120, setPriceSize120] = useState('');
   const [priceSize160, setPriceSize160] = useState('');
   const [priceSize200, setPriceSize200] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { id } = route.params as ProductNavigationProps; //recuperando id baseado no produto selecionado
+  console.log('ID do produto: ', id);
 
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -87,6 +105,7 @@ export function Product() {
       })
       .then(() => {
         ToastAndroid.show('Produto cadastrado com sucesso!', ToastAndroid.LONG);
+        navigation.navigate('home');
       })
       .catch((error) => {
         console.log(error);
@@ -95,19 +114,66 @@ export function Product() {
     setIsLoading(false);
   }
 
+  async function handleDelete() {
+    firestore()
+      .collection('products')
+      .doc(id)
+      .delete()
+      .then(() => {
+        storage()
+          .ref(photoPath)
+          .delete()
+          .then(() => {
+            ToastAndroid.show('Produto deletado com sucesso!', ToastAndroid.SHORT);
+            navigation.navigate('home');
+          });
+      });
+  }
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
+
+  useEffect(() => {
+    if (id) {
+      firestore()
+        .collection('products')
+        .doc(id)
+        .get()
+        .then((response) => {
+          const product = response.data() as ProductResponse;
+          setName(product.name);
+          setImage(product.photo_url);
+          setPhotoPath(product.photo_path);
+          setDescription(product.description);
+          setPriceSize120(product.prices_sizes.size120);
+          setPriceSize160(product.prices_sizes.size160);
+          setPriceSize200(product.prices_sizes.size200);
+
+        })
+    }
+  }, [id]);
+
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined} >
       <ScrollView showsVerticalScrollIndicator={false} >
         <Header>
-          <BackButton />
+          <BackButton onPress={handleGoBack} />
           <Title> Cadastrar </Title>
-          <TouchableOpacity>
-            <DeleteLabel>Deletar</DeleteLabel>
-          </TouchableOpacity>
+          {
+            id ?
+              <TouchableOpacity onPress={handleDelete} >
+                <DeleteLabel>Deletar</DeleteLabel>
+              </TouchableOpacity>
+              : <View style={{ width: 40 }} />
+          }
         </Header>
         <Upload>
           <Photo uri={image} />
-          <PickImageButton title='Carregar' type='primary' onPress={handlePickerImage} />
+          {
+            !id &&
+            <PickImageButton title='Carregar' type='primary' onPress={handlePickerImage} />
+          }
         </Upload>
         <Forms>
           <InputGroup>
@@ -120,11 +186,11 @@ export function Product() {
           <InputGroup>
             <InputGroupHeader>
               <Label> Descrição </Label>
-              <MaxCharacters> 0 de 80 caractéres </MaxCharacters>
+              <MaxCharacters> 0 de 200 caractéres </MaxCharacters>
             </InputGroupHeader>
             <Input
               multiline
-              maxLength={120}
+              maxLength={200}
               style={{ height: 80 }}
               onChangeText={setDescription}
               value={description}
@@ -136,12 +202,15 @@ export function Product() {
             <InputPrice size='160g' onChangeText={setPriceSize160} value={priceSize160} />
             <InputPrice size='200g' onChangeText={setPriceSize200} value={priceSize200} />
           </InputGroup>
-          <Button
-            title='Cadastrar produto'
-            type='secondary'
-            isLoading={isLoading}
-            onPress={handleAdd}
-          />
+          {
+            !id &&
+            <Button
+              title='Cadastrar Produto'
+              type='secondary'
+              isLoading={isLoading}
+              onPress={handleAdd}
+            />
+          }
         </Forms>
       </ScrollView>
     </Container>

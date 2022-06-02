@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Alert, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import firestore from '@react-native-firebase/firestore';
 
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useAuth } from '@hooks/auth';
 import { useTheme } from 'styled-components';
 
@@ -17,7 +18,8 @@ import {
   GreetingText,
   MenuHeader,
   Title,
-  MenuItemsNumber
+  MenuItemsNumber,
+  NewProductButton
 } from './styles';
 
 export function Home() {
@@ -26,6 +28,7 @@ export function Home() {
 
   const { user } = useAuth();
   const theme = useTheme();
+  const navigation = useNavigation();
 
   function fetchProducts(value: string) {
     const formattedValue = value.toLocaleLowerCase().trim();
@@ -60,9 +63,19 @@ export function Home() {
     fetchProducts('');
   }
 
-  useEffect(() => {
-    fetchProducts(''); // passando '' essa função vai trazer todos os produtos registrados
-  }, []);
+  function handleOpen(id: string) {
+    navigation.navigate('product', { id }); //passando id como parametro pra rota tipada
+  }
+
+  function handleAdd() {
+    navigation.navigate('product', {}); //chaves vazias para não passar nenhum parametro
+  }
+
+  // useFocusEffect ao invés de useEffect para voltar o foco para tela Home ao deletar um product
+  useFocusEffect(
+    useCallback(() => {
+      fetchProducts(''); // passando '' essa função vai trazer todos os produtos registrados
+    }, []));
 
   return (
     <Container>
@@ -84,7 +97,7 @@ export function Home() {
       />
       <MenuHeader>
         <Title>Cardápio</Title>
-        <MenuItemsNumber>10 hamburguers</MenuItemsNumber>
+        <MenuItemsNumber>{products.length} burguers</MenuItemsNumber>
       </MenuHeader>
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -95,7 +108,17 @@ export function Home() {
         }}
         data={products}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <ProductCard data={item} />}
+        renderItem={({ item }) => (
+          <ProductCard
+            data={item}
+            onPress={() => handleOpen(item.id)}
+          />
+        )}
+      />
+      <NewProductButton
+        title='Cadastrar Produto'
+        type="primary"
+        onPress={handleAdd}
       />
     </Container>
   );
