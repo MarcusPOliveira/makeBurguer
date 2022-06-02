@@ -19,6 +19,7 @@ import {
   Price
 } from './styles';
 import { Button } from '@components/Button';
+import { InputQuantity } from '@components/InputQuantity';
 
 export function Order() {
   const [size, setSize] = useState('');
@@ -61,8 +62,8 @@ export function Order() {
             </InputGroup>
             <InputGroup>
               <Label>Quantidade</Label>
-              <Input
-                keyboardType='numeric'
+              <InputQuantity
+
               />
             </InputGroup>
           </FormRow>
