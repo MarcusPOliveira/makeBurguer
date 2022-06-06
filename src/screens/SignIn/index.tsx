@@ -36,6 +36,7 @@ export function SignIn() {
           <Title> Entre com sua conta </Title>
           <Input
             placeholder='Email'
+            style={{ backgroundColor: 'transparent' }}
             type='secondary'
             autoCorrect={false}
             autoCapitalize='none'
@@ -44,6 +45,7 @@ export function SignIn() {
           />
           <Input
             placeholder='Senha'
+            style={{ backgroundColor: 'transparent' }}
             type='secondary'
             autoCorrect={false}
             secureTextEntry

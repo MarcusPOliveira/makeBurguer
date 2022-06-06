@@ -26,7 +26,7 @@ export function Home() {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [search, setSearch] = useState('');
 
-  const { user } = useAuth();
+  const { signOut, user } = useAuth();
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -64,11 +64,16 @@ export function Home() {
   }
 
   function handleOpen(id: string) {
-    navigation.navigate('product', { id }); //passando id como parametro pra rota tipada
+    const route = user?.isAdmin ? 'product' : 'order';
+    navigation.navigate(route, { id }); //passando id como parametro para rota tipada
   }
 
   function handleAdd() {
     navigation.navigate('product', {}); //chaves vazias para não passar nenhum parametro
+  }
+
+  function handleSignOut() {
+    signOut();
   }
 
   // useFocusEffect ao invés de useEffect para voltar o foco para tela Home ao deletar um product
@@ -84,7 +89,7 @@ export function Home() {
           <GreetingEmoji source={HappyEmoji} />
           <GreetingText>Olá, garçom</GreetingText>
         </Greeting>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSignOut}>
           <MaterialIcons name='logout' color={theme.COLORS.TITLE} size={24} />
         </TouchableOpacity>
       </Header>
@@ -115,11 +120,15 @@ export function Home() {
           />
         )}
       />
-      <NewProductButton
-        title='Cadastrar Produto'
-        type="primary"
-        onPress={handleAdd}
-      />
+      {
+        user?.isAdmin &&
+        <NewProductButton
+          title='Cadastrar Produto'
+          type="primary"
+          onPress={handleAdd}
+        />
+      }
+
     </Container>
   );
 }

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Platform, ScrollView } from 'react-native';
+import { Platform } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import { PRODUCT_TYPES } from '@utils/productTypes';
 import { BackButton } from '@components/BackButton';
 import { RadioButton } from '@components/RadioButton';
 import { Input } from '@components/Input';
+import { Button } from '@components/Button';
+import { InputQuantity } from '@components/InputQuantity';
 import {
   Container,
   ContentScroll,
@@ -18,14 +21,14 @@ import {
   InputGroup,
   Price
 } from './styles';
-import { Button } from '@components/Button';
-import { InputQuantity } from '@components/InputQuantity';
 
 export function Order() {
   const [size, setSize] = useState('');
 
-  function handleGoBack() {
+  const navigation = useNavigation();
 
+  function handleGoBack() {
+    navigation.goBack();
   }
 
   return (
