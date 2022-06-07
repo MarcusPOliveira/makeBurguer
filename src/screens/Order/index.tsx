@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Alert, Platform } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { OrderNavigationProps, ProductNavigationProps } from 'src/@types/navigation';
 import { PRODUCT_TYPES } from '@utils/productTypes';
 import { BackButton } from '@components/BackButton';
 import { RadioButton } from '@components/RadioButton';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+import { ProductProps } from '@components/ProductCard';
 import { InputQuantity } from '@components/InputQuantity';
 import {
   Container,
@@ -22,14 +25,43 @@ import {
   Price
 } from './styles';
 
+type ProductResponse = ProductProps & {
+  prices_sizes: {
+    [key: string]: number;
+  }
+}
+
 export function Order() {
   const [size, setSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [tableNumber, setTableNumber] = useState('');
+  const [product, setProduct] = useState<ProductResponse>({} as ProductResponse);
 
   const navigation = useNavigation();
+
+  const route = useRoute();
+  const { id } = route.params as OrderNavigationProps;
+  const amount = size ? product.prices_sizes[size] * quantity : '0,00'
 
   function handleGoBack() {
     navigation.goBack();
   }
+
+  //carreagndo dados dos pedidos
+  useEffect(() => {
+    if (id) {
+      firestore()
+        .collection('products')
+        .doc(id)
+        .get()
+        .then(response => {
+          setProduct(response.data() as ProductResponse)
+        })
+        .catch(error => {
+          Alert.alert('Pedido', 'Não foi possível carregar o produto')
+        });
+    }
+  }, [id]);
 
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -40,9 +72,9 @@ export function Order() {
             style={{ marginBottom: 108 }}
           />
         </Header>
-        <Photo source={{ uri: 'https://media.gazetadopovo.com.br/2021/05/24202047/hamburguer-janelabar-divulgacao-960x540.jpg' }} />
+        <Photo source={{ uri: product.photo_url }} />
         <Forms>
-          <Title>Nome do Produto</Title>
+          <Title>{product.name}</Title>
           <Label>Selecione o tamanho do burguer</Label>
           <Sizes>
             {
@@ -61,6 +93,8 @@ export function Order() {
               <Label>Número da mesa</Label>
               <Input
                 keyboardType='numeric'
+                value={tableNumber}
+                onChangeText={setTableNumber}
               />
             </InputGroup>
             <InputGroup>
@@ -70,7 +104,7 @@ export function Order() {
               />
             </InputGroup>
           </FormRow>
-          <Price>Valor de R$ 00,00</Price>
+          <Price>Valor de R$ {amount}</Price>
           <Button
             title='Confirmar Pedido'
             type='secondary'
