@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, ToastAndroid } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { OrderNavigationProps, ProductNavigationProps } from 'src/@types/navigation';
+import { useAuth } from '@hooks/auth';
+
+import { OrderNavigationProps } from 'src/@types/navigation';
 import { PRODUCT_TYPES } from '@utils/productTypes';
 import { BackButton } from '@components/BackButton';
 import { RadioButton } from '@components/RadioButton';
@@ -35,17 +37,51 @@ export function Order() {
   const [size, setSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [tableNumber, setTableNumber] = useState('');
+  const [sendingOrder, setSendingOrder] = useState(false);
   const [product, setProduct] = useState<ProductResponse>({} as ProductResponse);
 
   const navigation = useNavigation();
-
+  const { user } = useAuth();
   const route = useRoute();
   const { id } = route.params as OrderNavigationProps;
+
   //const amount = size ? product.prices_sizes[size] * quantity : '0,00'
   const amount = size ? (product.prices_sizes[size]) * (quantity) : '0,00';
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  async function handleOrder() {
+    if (!size) {
+      return ToastAndroid.show('Selecione o tamanho do burguer!', ToastAndroid.SHORT);
+    }
+    if (!tableNumber) {
+      return ToastAndroid.show('Informe o número da mesa!', ToastAndroid.SHORT);
+    }
+    setSendingOrder(true);
+    //salvando o pedido no firestore
+    firestore()
+      .collection('orders')
+      .add({
+        quantity,
+        amount,
+        product: product.name,
+        size,
+        table_number: tableNumber,
+        status: 'Preparando',
+        waiter_id: user?.id,
+        image: product.photo_url
+      })
+      .then(() => {
+        ToastAndroid.show('Pedido efetuado com sucesso. Status: Preparando', ToastAndroid.LONG);
+        navigation.navigate('home');
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert('Pedido', 'Não foi possível realizar o pedido!');
+        setSendingOrder(false);
+      })
   }
 
   //carreagndo dados dos pedidos
@@ -107,10 +143,12 @@ export function Order() {
               />
             </InputGroup>
           </FormRow>
-          <Price>Valor de R$ {amount}</Price>
+          <Price>Valor Total de R$ {amount}</Price>
           <Button
             title='Confirmar Pedido'
             type='secondary'
+            isLoading={sendingOrder}
+            onPress={handleOrder}
           />
         </Forms>
       </ContentScroll>

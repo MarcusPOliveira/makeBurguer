@@ -2,6 +2,7 @@ import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
+import { useTheme } from 'styled-components';
 import {
   Container,
   Content,
@@ -12,7 +13,6 @@ import {
   Description,
   Line
 } from './styles';
-import { useTheme } from 'styled-components';
 
 export type ProductProps = {
   id: string;

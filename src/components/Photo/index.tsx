@@ -14,6 +14,7 @@ export function Photo({ uri }: Props) {
   if (uri) {
     return <Image resizeMode='contain' source={{ uri }} />
   }
+
   return (
     <Placeholder>
       <PlaceholderTitle> Nenhuma foto{'\n'} carregada </PlaceholderTitle>

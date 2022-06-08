@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ToastAndroid, TouchableOpacityProps, TextInputProps } from 'react-native';
+import { ToastAndroid, TextInputProps } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 

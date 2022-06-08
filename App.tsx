@@ -9,7 +9,6 @@ import { DMSerifDisplay_400Regular } from '@expo-google-fonts/dm-serif-display';
 import theme from './src/theme';
 import { AuthProvider } from '@hooks/auth';
 import { Routes } from './src/routes';
-import { SignIn } from '@screens/SignIn';
 
 export default function App() {
 

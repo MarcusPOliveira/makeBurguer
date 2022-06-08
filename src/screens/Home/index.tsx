@@ -128,7 +128,6 @@ export function Home() {
           onPress={handleAdd}
         />
       }
-
     </Container>
   );
 }

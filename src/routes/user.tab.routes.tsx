@@ -1,20 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import firestore from '@react-native-firebase/firestore';
 
 import { useTheme } from 'styled-components/native';
-import { useAuth } from '@hooks/auth';
-
 import { BottomMenu } from '@components/BottomMenu';
 import { Home } from '@screens/Home';
-import { Product } from '@screens/Product';
 import { Orders } from '@screens/Orders';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export function UserTabRoutes() {
+  const [notifications, setNotifications] = useState('0');
 
   const theme = useTheme();
+
+  useEffect(() => {
+    //pegando do DB em tempo real a quantidade de pedidos que estão com Status Pronto
+    const subscribe = firestore()
+      .collection('orders')
+      .where('status', '==', 'Pronto')
+      .onSnapshot(querySnapshot => {
+        setNotifications(String(querySnapshot.docs.length));
+      });
+    return () => subscribe();
+  }, []);
 
   return (
     <Navigator
@@ -43,7 +53,7 @@ export function UserTabRoutes() {
         component={Orders}
         options={{
           tabBarIcon: ({ color }) => (
-            <BottomMenu title="Pedidos" color={color} notifications='5' />
+            <BottomMenu title="Pedidos" color={color} notifications={notifications} />
           )
         }}
       />
