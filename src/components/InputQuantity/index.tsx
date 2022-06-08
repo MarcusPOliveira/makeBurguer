@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ToastAndroid, TouchableOpacityProps } from 'react-native';
+import { ToastAndroid, TouchableOpacityProps, TextInputProps } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 
@@ -10,23 +10,27 @@ import {
   Result
 } from './styles';
 
-export function InputQuantity() {
-  const [quantity, setQuantity] = useState(1);
+type Props = TextInputProps & {
+
+}
+
+export function InputQuantity({ ...rest }: Props) {
+  const [showQuantity, setShowQuantity] = useState(1);
 
   const theme = useTheme();
 
   function handleRemove() {
-    const result = quantity - 1;
+    const result = showQuantity - 1;
     if (result < 1) {
       ToastAndroid.show('A quantidade mínima não pode ser menor que 1', ToastAndroid.SHORT);
     } else {
-      setQuantity(result);
+      setShowQuantity(result);
     }
   }
 
   function handleAdd() {
-    const result = quantity + 1;
-    setQuantity(result);
+    const result = showQuantity + 1;
+    setShowQuantity(result);
   }
 
   return (
@@ -35,8 +39,9 @@ export function InputQuantity() {
         <MaterialIcons name="remove" size={24} color={theme.COLORS.SHAPE} />
       </Less>
       <Result
+        {...rest}
         editable={false}
-        value={quantity.toString()}
+        value={showQuantity.toString()}
       />
       <More onPress={handleAdd}>
         <MaterialIcons name="add" size={24} color={theme.COLORS.SHAPE} />
