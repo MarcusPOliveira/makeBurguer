@@ -15,7 +15,7 @@ Avançar no aprendizado de alguns recursos, como:
 - Renderização de interfaces/componentes condicional (se o usuário é admin ou garçom)
 - Componentes personalizados
 
-## 💡 Futura implementação
+## 💡 Futuras implementações
 - Dashboard para atualizar os status dos pedidos
 - Adição de novos campos na interface de pedidos, como "Observação" e "Adicionais"
 
