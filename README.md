@@ -18,6 +18,7 @@ Avançar no aprendizado de alguns recursos, como:
 ## 💡 Futuras implementações
 - Dashboard para atualizar os status dos pedidos
 - Adição de novos campos na interface de pedidos, como "Observação" e "Adicionais"
+- Interface de Pagamento com valor total consumido por mesa
 
 ## 📱 Layout
    https://user-images.githubusercontent.com/47436367/172855282-3e9852ea-b3dd-4e0c-8008-bc4cd7f47257.mp4
