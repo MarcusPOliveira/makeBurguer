@@ -16,7 +16,8 @@ Avançar no aprendizado de alguns recursos, como:
 - Componentes personalizados
 
 ## 💡 Futura implementação
-- Funcionalidade em que o Admin poderá atualizar o status do pedido pelo app, refletindo na tela de Pedidos do Garçom
+- Dashboard para atualizar os status dos pedidos
+- Adição de novos campos na interface de pedidos, como "Observação" e "Adicionais"
 
 ## 📱 Layout
    https://user-images.githubusercontent.com/47436367/172855282-3e9852ea-b3dd-4e0c-8008-bc4cd7f47257.mp4
