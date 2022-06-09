@@ -21,8 +21,8 @@ Avançar no aprendizado de alguns recursos, como:
 ## 📱 Layout
 
 <p float="left">
-    https://user-images.githubusercontent.com/47436367/172855282-3e9852ea-b3dd-4e0c-8008-bc4cd7f47257.mp4
-    https://user-images.githubusercontent.com/47436367/172855433-439d990a-e2b0-4fdf-aa05-37e1f5192221.mp4
+    https://user-images.githubusercontent.com/47436367/172855282-3e9852ea-b3dd-4e0c-8008-bc4cd7f47257.mp4</br>
+    https://user-images.githubusercontent.com/47436367/172855433-439d990a-e2b0-4fdf-aa05-37e1f5192221.mp4</br>
     https://user-images.githubusercontent.com/47436367/172855480-2ec6b33e-51ba-412d-aaf3-619bf3fba0b8.mp4
 </p>
 
