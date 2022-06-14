@@ -9,7 +9,8 @@ import { useTheme } from 'styled-components';
 
 import { Search } from '@components/Search';
 import { ProductCard, ProductProps } from '@components/ProductCard';
-import HappyEmoji from '@assets/happy.png';
+import Waiter from '@assets/waiter.png';
+import Laptop from '@assets/laptop.png';
 import {
   Container,
   Header,
@@ -86,15 +87,16 @@ export function Home() {
     <Container>
       <Header>
         <Greeting>
-          <GreetingEmoji source={HappyEmoji} />
-          <GreetingText>Olá, garçom</GreetingText>
+          <GreetingEmoji source={user?.isAdmin ? Laptop : Waiter} />
+          <GreetingText>
+            Olá, {user?.isAdmin ? 'Administrador' : 'Garçom'}
+          </GreetingText>
         </Greeting>
         <TouchableOpacity onPress={handleSignOut}>
           <MaterialIcons name='logout' color={theme.COLORS.TITLE} size={24} />
         </TouchableOpacity>
       </Header>
       <Search
-
         onChangeText={setSearch}
         value={search}
         onSearch={handleSearch}

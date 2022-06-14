@@ -45,8 +45,11 @@ export function Order() {
   const route = useRoute();
   const { id } = route.params as OrderNavigationProps;
 
-  //const amount = size ? product.prices_sizes[size] * quantity : '0,00'
   const amount = size ? (product.prices_sizes[size]) * (quantity) : '0,00';
+
+  function handleInputQuantityChange(value: number) {
+    setQuantity(value);
+  }
 
   function handleGoBack() {
     navigation.goBack();
@@ -139,7 +142,8 @@ export function Order() {
             <InputGroup>
               <Label>Quantidade</Label>
               <InputQuantity
-                onChangeText={(value) => setQuantity(Number(value))}
+                setInputQuantity={handleInputQuantityChange}
+                inputQuantity={quantity}
               />
             </InputGroup>
           </FormRow>

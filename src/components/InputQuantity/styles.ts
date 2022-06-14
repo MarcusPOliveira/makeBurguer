@@ -29,7 +29,7 @@ export const More = styled.TouchableOpacity`
 `;
 
 export const Result = styled.TextInput`
-  width: 54px;
+  width: 62px;
   display: flex;
   justify-content: center;
   align-items: center;

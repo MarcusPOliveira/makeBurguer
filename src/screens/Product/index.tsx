@@ -186,7 +186,7 @@ export function Product() {
           <InputGroup>
             <InputGroupHeader>
               <Label> Descrição </Label>
-              <MaxCharacters> 0 de 200 caractéres </MaxCharacters>
+              <MaxCharacters> Máx. de 200 caractéres </MaxCharacters>
             </InputGroupHeader>
             <Input
               multiline

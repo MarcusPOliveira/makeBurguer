@@ -11,26 +11,26 @@ import {
 } from './styles';
 
 type Props = TextInputProps & {
-
+  setInputQuantity: (value: number) => void;
+  inputQuantity: number;
 }
 
-export function InputQuantity({ ...rest }: Props) {
-  const [showQuantity, setShowQuantity] = useState(1);
+export function InputQuantity({ setInputQuantity, inputQuantity, ...rest }: Props) {
 
   const theme = useTheme();
 
   function handleRemove() {
-    const result = showQuantity - 1;
+    const result = inputQuantity - 1;
     if (result < 1) {
       ToastAndroid.show('A quantidade mínima não pode ser menor que 1', ToastAndroid.SHORT);
     } else {
-      setShowQuantity(result);
+      setInputQuantity(result);
     }
   }
 
   function handleAdd() {
-    const result = showQuantity + 1;
-    setShowQuantity(result);
+    const result = inputQuantity + 1;
+    setInputQuantity(result);
   }
 
   return (
@@ -41,7 +41,7 @@ export function InputQuantity({ ...rest }: Props) {
       <Result
         {...rest}
         editable={false}
-        value={showQuantity.toString()}
+        value={inputQuantity.toString()}
       />
       <More onPress={handleAdd}>
         <MaterialIcons name="add" size={24} color={theme.COLORS.SHAPE} />
